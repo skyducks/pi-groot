@@ -3,11 +3,31 @@
 
 ## Prerequisites
 
+### Server
+
 - [Docker](https://docs.docker.com/install/linux/docker-ce/debian/)
-- 
+
+
+### Raspberry Pi
+
+```bash
+sudo apt install build-essential python-dev python-pip python3-pip libgpiod2
+pip3 install virtualenv
+```
+
 
 ## Getting Started
 
-```
+### Server
+
+```bash
 docker-compose up -d
+```
+
+### Raspberry Pi
+
+```bash
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```

@@ -1,0 +1,19 @@
+elasticsearch:
+  host: 192.168.0.2
+  index-prefix: groot-
+
+hardware:
+  sensors:
+    dht:
+      nature:
+        - temperature
+        - humidity
+      pin: 11
+
+    light:
+      nature:
+        - light
+      pin: 2
+
+  motors:
+    

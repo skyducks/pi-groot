@@ -29,5 +29,6 @@ docker-compose up -d
 ```bash
 virtualenv -p python3 venv
 source venv/bin/activate
-pip install -r requirements.txt
+python ./setup.py install
+pi_groot -c ./config.yml
 ```

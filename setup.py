@@ -14,8 +14,9 @@ setup(
     ],
     install_requires=[
         'board',
-        'adafruit-circuitpython-dht',
+        'adafruit-circuitpython-dht', # REF https://circuitpython.org/libraries
         'pyyaml',
-        'elasticsearch>=7.0.0,<8.0.0'
+        'elasticsearch>=7.0.0,<8.0.0',
+        'pytz'
     ]
 )

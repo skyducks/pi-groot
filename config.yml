@@ -1,19 +1,23 @@
 elasticsearch:
-  host: 192.168.0.2
-  index-prefix: groot-
+  timezone: Asia/Seoul
+  hosts:
+    es-server:
+      host: 192.168.0.2
 
+# TODO support fritzing-parts-api-client-js
 hardware:
   sensors:
     dht:
+      pins:
+        - 11
       nature:
         - temperature
         - humidity
-      pin: 11
 
     light:
+      pins:
+        - 2
       nature:
         - light
-      pin: 2
 
   motors:
-    

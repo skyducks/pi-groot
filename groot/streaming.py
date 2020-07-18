@@ -1,54 +1,34 @@
 #!/usr/bin/env python3
 
+import logging
 from elasticsearch import Elasticsearch
-import threading
-
-# ------------------------------------------------------------
-# REF Thread-related stuff
-# https://github.com/python/cpython/blob/master/Lib/logging/__init__.py
-
-_lock = threading.RLock()
+from groot import lib
+import pytz
 
 
-def _acquireLock():
-    """
-    Acquire the module-level lock for serializing access to shared data.
-
-    This should be released with _releaseLock().
-    """
-    if _lock:
-        _lock.acquire()
-
-
-def _releaseLock():
-    """
-    Release the module-level lock acquired by calling _acquireLock().
-    """
-    if _lock:
-        _lock.release()
-# ------------------------------------------------------------
-
-
-class Streamer():
-    def __init__(self, host=None, index_prefix=None):
-        self._es = Elasticsearch([host])
-        self._index_prefix = index_prefix()
+class Streamer(metaclass=lib.SingletonMeta):
+    def __init__(self, timezone=None):
+        self._handlers = []
+        self._timezone = pytz.timezone(timezone) if timezone else timezone
 
     @property
-    def host(self):
-        return self._es
+    def timezone(self):
+        return self._timezone
 
-    @host.setter
-    def host(self, host):
-        self._es = Elasticsearch([host])
+    @timezone.setter
+    def timezone(self, timezone):
+        self._timezone = pytz.timezone(timezone)
 
-    @property
-    def index_prefix(self):
-        return self._index_prefix
+    def index(self, **kwargs):
+        try:
+            for handler in self._handlers:
+                handler.index(**kwargs)
+        except Exception as e:
+            logging.error(e)
 
-    @index_prefix.setter
-    def index_prefix(self, index_prefix):
-        self._index_prefix = index_prefix
+    def addHandler(self, handler: Elasticsearch):
+        if not handler in self._handlers:
+            self._handlers.append(handler)
 
 
 root = Streamer()
@@ -56,11 +36,17 @@ root = Streamer()
 
 def basicConfig(**kwargs):
     try:
-        host = kwargs.pop('host', '127.0.0.1')
-        index_prefix = kwargs.pop('index-prefix', '')
-        root.host = host
-        root.index_prefix = index_prefix
-    except UnboundLocalError:
-        root = Streamer(host, index_prefix)
-    finally:
-        _releaseLock()
+        timezone = kwargs.pop('timezone')
+        root.timezone = timezone
+    except KeyError:
+        logging.warning(
+            'Cannot parse timezone. Default timezone will be used.')
+        pass
+
+    try:
+        hosts = kwargs.pop('hosts')
+        for host in hosts:
+            root.addHandler(Elasticsearch(**hosts.get(host)))
+    except KeyError:
+        logging.error('Cannot find Elasticsearch hosts info')
+        pass

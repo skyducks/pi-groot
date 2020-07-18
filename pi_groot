@@ -9,11 +9,15 @@ logging.basicConfig(level=logging.INFO)
 
 
 def run(args):
-    with open(args.config, 'r') as f:
-        parsed_config = yaml.load(f, Loader=yaml.FullLoader)
-    groot.setup(
-        es_config=parsed_config['elasticsearch'], hw_config=parsed_config['hardware'])
-    groot.run()
+    groot.lib._acquireLock()
+    try:
+        with open(args.config, 'r') as f:
+            parsed_config = yaml.load(f, Loader=yaml.FullLoader)
+        groot.setup(
+            es_config=parsed_config['elasticsearch'], hw_config=parsed_config['hardware'])
+        groot.run()
+    finally:
+        groot.lib._releaseLock()
 
 
 def main():

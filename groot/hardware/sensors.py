@@ -28,6 +28,9 @@ class Sensor(object):
         pass
 
 
+Nature = namedtuple('Nature', ['value', 'unit'])
+
+
 def factory(sensor_type, pins=[]):
     class DhtSensor(Sensor):
         def __init__(self, pins=[]):
@@ -48,10 +51,12 @@ def factory(sensor_type, pins=[]):
             return data
 
         def temperature(self):
-            return self.snapshot('temperature')
+            data = self.snapshot('temperature')
+            return Nature(data, 'C')
 
         def humidity(self):
-            return self.snapshot('humidity')
+            data = self.snapshot('humidity')
+            return Nature(data, '%')
 
     if str.lower(sensor_type) == 'dht':
         return DhtSensor(pins)

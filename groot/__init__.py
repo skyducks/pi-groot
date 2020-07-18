@@ -12,7 +12,6 @@ def setup(es_config=None, hw_config=None):
 
     try:
         hardware.basicConfig(**hw_config)
-        # TODO motors
     except Exception:
         logging.error('Cannot load hardware: %s', hw_config)
         raise Exception

@@ -21,3 +21,4 @@ def basicConfig(**kwargs):
     for sensor_type, sensor_details in sensors_config.items():
         root.sensors.append(sensors.factory(
             sensor_type, sensor_details.pop('pins')))
+    # TODO motors, analog sensors

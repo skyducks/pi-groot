@@ -5,7 +5,8 @@
 
 ### Server
 
-- [Docker](https://docs.docker.com/install/linux/docker-ce/debian/)
+ * [Docker](https://docs.docker.com/install/linux/docker-ce/debian/)
+ * Ports for ES should be opened. (default: 9200, 9300)
 
 
 ### Raspberry Pi

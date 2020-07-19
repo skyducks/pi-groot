@@ -12,8 +12,8 @@ def setup(es_config=None, hw_config=None):
 
     try:
         hardware.basicConfig(**hw_config)
-    except Exception:
-        logging.error('Cannot load hardware: %s', hw_config)
+    except Exception as e:
+        logging.error('Cannot load hardware: %s', e)
         raise Exception
 
 

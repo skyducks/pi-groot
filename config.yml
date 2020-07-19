@@ -1,5 +1,6 @@
 elasticsearch:
   timezone: Asia/Seoul
+  prefix: 'my-home'
   hosts:
     es-server:
       host: 192.168.0.2
@@ -7,17 +8,12 @@ elasticsearch:
 # TODO support fritzing-parts-api-client-js
 hardware:
   sensors:
-    dht:
+    dht:    # temperature, humidity
       pins:
         - 11
-      nature:
-        - temperature
-        - humidity
 
-    light:
+    light:  # light
       pins:
         - 2
-      nature:
-        - light
 
   motors:

@@ -15,9 +15,9 @@ def run(args):
             parsed_config = yaml.load(f, Loader=yaml.FullLoader)
         groot.setup(
             es_config=parsed_config['elasticsearch'], hw_config=parsed_config['hardware'])
-        groot.run()
     finally:
         groot.lib._releaseLock()
+    groot.run()
 
 
 def main():

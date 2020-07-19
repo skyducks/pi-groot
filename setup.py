@@ -13,10 +13,11 @@ setup(
         'Programming Language :: Python :: 3'
     ],
     install_requires=[
-        'board',
+        'adafruit-blinka',
         'adafruit-circuitpython-dht', # REF https://circuitpython.org/libraries
         'pyyaml',
         'elasticsearch>=7.0.0,<8.0.0',
-        'pytz'
+        'pytz',
+        'psutil'
     ]
 )

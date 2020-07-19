@@ -14,6 +14,7 @@ class SensorManager(metaclass=lib.SingletonMeta):
 
 
 root = SensorManager()
+nature = dict()
 
 
 def basicConfig(**kwargs):

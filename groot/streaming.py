@@ -50,3 +50,7 @@ def basicConfig(**kwargs):
     except KeyError:
         logging.error('Cannot find Elasticsearch hosts info')
         pass
+
+
+def index(**kwargs):
+    root.index(**kwargs)

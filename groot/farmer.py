@@ -20,4 +20,4 @@ def observe():
         except RuntimeError as e:
             logging.error('Cannot parse %s. %s', key, e)
 
-    streaming.index(data)
+    streaming.index(**data)

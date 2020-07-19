@@ -4,6 +4,7 @@ import logging
 from elasticsearch import Elasticsearch
 from groot import lib
 import pytz
+from datetime import datetime
 
 
 class Streamer(metaclass=lib.SingletonMeta):
@@ -19,12 +20,24 @@ class Streamer(metaclass=lib.SingletonMeta):
     def timezone(self, timezone):
         self._timezone = pytz.timezone(timezone)
 
+    @property
+    def prefix(self):
+        return self._prefix
+
+    @prefix.setter
+    def prefix(self, prefix):
+        self._prefix = prefix
+
     def index(self, **kwargs):
+        body = kwargs
+        body['timestamp'] = datetime.now(self._timezone)
+        index_name = '-'.join([self._prefix, datetime.now().strftime(r'%Y.%m.%d')])
         try:
             for handler in self._handlers:
-                handler.index(**kwargs)
-        except Exception as e:
+                handler.index(index=index_name, body=body)
+        except ConnectionError as e:
             logging.error(e)
+            pass
 
     def addHandler(self, handler: Elasticsearch):
         if not handler in self._handlers:
@@ -41,6 +54,12 @@ def basicConfig(**kwargs):
     except KeyError:
         logging.warning(
             'Cannot parse timezone. Default timezone will be used.')
+        pass
+
+    try:
+        prefix = kwargs.pop('prefix')
+        root.prefix = prefix
+    except KeyError:
         pass
 
     try:

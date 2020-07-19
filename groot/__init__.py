@@ -18,6 +18,8 @@ def setup(es_config=None, hw_config=None):
 
 
 def run():
+    import time
     # TODO
     while True:
-        logging.info(farmer.observe())
+        farmer.observe()
+        time.sleep(10)

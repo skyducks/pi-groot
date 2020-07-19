@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+import argparse
+import logging
+import groot
+import yaml
+
+logging.basicConfig(level=logging.INFO)
+
+
+def run(args):
+    groot.lib._acquireLock()
+    try:
+        with open(args.config, 'r') as f:
+            parsed_config = yaml.load(f, Loader=yaml.FullLoader)
+        groot.setup(
+            es_config=parsed_config['elasticsearch'], hw_config=parsed_config['hardware'])
+    finally:
+        groot.lib._releaseLock()
+    groot.run()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='Smart farming tool for Raspberry pi.')
+    parser.add_argument('-c', '--config', default='config.yml',
+                        help='configurations file for raspberry pi')
+    parser.add_argument('-d', '--debug', action='store_true', default=False)
+    args = parser.parse_args()
+    if args.debug:
+        logging.getLogger().setLevel(level=logging.DEBUG)
+    run(args)
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

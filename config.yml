@@ -1,0 +1,19 @@
+elasticsearch:
+  timezone: Asia/Seoul
+  prefix: 'my-home'
+  hosts:
+    es-server:
+      host: 192.168.0.2
+
+# TODO support fritzing-parts-api-client-js
+hardware:
+  sensors:
+    dht:    # temperature, humidity
+      pins:
+        - 11
+
+    light:  # light
+      pins:
+        - 2
+
+  motors:
